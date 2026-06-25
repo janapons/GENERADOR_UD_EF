@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de UD i Sessions amb IA - Plantilla Oficial</title>
+    <style>
+        :root {
+            --color-principal: #2c3e50;
+            --color-accent: #16a085;
+            --color-ia: #8e44ad;
+            --fons-pantalla: #f5f6fa;
+            --fons-caixa: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fons-pantalla);
+            color: var(--color-principal);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--fons-caixa);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 { text-align: center; color: var(--color-principal); margin-bottom: 5px; }
+        p.subtitol { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grup-formulari { display: flex; flex-direction: column; }
+        .complet { grid-column: span 2; }
+        label { font-weight: bold; margin-bottom: 8px; font-size: 14px; }
+        
+        select, input, textarea {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #fff;
+        }
+
+        .btn-ia {
+            grid-column: span 2;
+            padding: 15px;
+            background-color: var(--color-ia);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-ia:hover { background-color: #732d91; }
+
+        #estat-carrega {
+            text-align: center;
+            font-weight: bold;
+            color: var(--color-ia);
+            margin: 15px 0;
+            display: none;
+        }
+
+        /* DISSENY DEL DOCUMENT FINAL DIN-A4 IMPRIMIBLE */
+        #vista-document { margin-top: 40px; border-top: 3px dashed #cbd5e1; padding-top: 30px; display: none; }
+        .boto-imprimir { background-color: #2980b9; color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+        .caixa-document { border: 2px solid #000; padding: 40px; background: white; color: #000; }
+        
+        /* Forçam l'estil clàssic de graella de línies negres dures del PDF original */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        th, td {
+            border: 1px solid #000 !important;
+            padding: 10px;
+            font-size: 14px;
+            vertical-align: top;
+            text-align: left;
+            color: #000;
+        }
+        .cel-titol { background-color: #f2f2f2; font-weight: bold; width: 25%; }
+
+        /* Estils per als gràfics explicatius generats per la IA */
+        .grafic-exercici {
+            margin: 15px 0;
+            border: 1px dashed #7f8c8d;
+            background-color: #fafbfc;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .contenedor > h1, p.subtitol, form, .boto-imprimir, #vista-document > h2, #estat-carrega { display: none !important; }
+            .contenedor { box-shadow: none; margin: 0; padding: 0; max-width: 100%; }
+            #vista-document { border-top: none; padding-top: 0; display: block !important; }
+            .caixa-document { border: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <h1>🤖 Generador de UD i Sessions (Nova Plantilla Oficial)</h1>
+    <p class="subtitol">Educació Física — Maquetació en Graella i Disseny Gràfic</p>
+
+    <form id="formulari-ia">
+        <div class="grup-formulari">
+            <label for="cicle">Cicle / Curs:</label>
+            <select id="cicle">
+                <option value="Cicle Inicial (1r i 2n)">Cicle Inicial (1r i 2n)</option>
+                <option value="Cicle Mitjà (3r i 4t)">Cicle Mitjà (3r i 4t)</option>
+                <option value="Cicle Superior (5è i 6è)">Cicle Superior (5è i 6è)</option>
+            </select>
+        </div>
+
+        <div class="grup-formulari">
+            <label for="nom-ud">Nom de la Unitat Didàctica:</label>
+            <input type="text" id="nom-ud" placeholder="Ex: UD1 - Comencem a 5è">
+        </div>
+
+        <div class="grup-formulari">
+            <label for="durada">Durada (Sessions):</label>
+            <input type="number" id="durada" value="4" min="1">
+        </div>
+
+        <div class="grup-formulari">
+            <label for="periode">Període temporal:</label>
+            <select id="periode">
+                <option value="1r Trimestre">1r Trimestre</option>
+                <option value="2n Trimestre">2n Trimestre</option>
+                <option value="3r Trimestre">3r Trimestre</option>
+            </select>
+        </div>
+
+        <div class="grup-formulari complet">
+            <label for="documents-brut">📄 Contingut de referència (Enganxa text o idees de la teva carpeta del Drive):</label>
+            <textarea id="documents-brut" rows="10" placeholder="Enganxa aquí fragments de programacions, jocs antics o anotacions en brut..."></textarea>
+        </div>
+
+        <button type="button" class="btn-ia" id="boto-ia">✨ Generar Unitat Didàctica en Graella</button>
+    </form>
+
+    <div id="estat-carrega">⏳ La IA està processant els documents, creant els gràfics i maquetant la graella oficial... Un moment...</div>
+
+    <div id="vista-document">
+        <h2>👀 Document Generat per la IA</h2>
+        <button class="boto-imprimir" onclick="window.print()">🖨️ Imprimir / Guardar en PDF Din-A4</button>
+        <div class="caixa-document" id="contingut-ud"></div>
+    </div>
+</div>
+
+<script>
+    // 🔑 GUARDA AQUÍ LA TEVA CLAU DINS LES COMETES:
+    const apiKey = "AQ.Ab8RN6KgWl9XXBUeCBknyvFQCMBlhrtgBkvqxly4MCWvVmLOrg";
+
+    document.getElementById('boto-ia').onclick = async function() {
+        const btn = document.getElementById('boto-ia');
+        const cicle = document.getElementById('cicle').value;
+        const nomUd = document.getElementById('nom-ud').value || "Unitat Didàctica";
+        const durada = document.getElementById('durada').value;
+        const periode = document.getElementById('periode').value;
+        const textBrut = document.getElementById('documents-brut').value;
+
+        if (!apiKey || apiKey === "") {
+            alert("Per favor, obre el fitxer amb el Bloc de notes i guarda la teva API Key a la línia 150 del codi.");
+            return;
+        }
+        if (!textBrut) {
+            alert("Per favor, enganxa algun text de referència.");
+            return;
+        }
+
+        btn.innerText = "⏳ Processant petició...";
+        btn.style.backgroundColor = "#7f8c8d";
+        document.getElementById('estat-carrega').style.display = 'block';
+        document.getElementById('vista-document').style.display = 'none';
+
+        const promptSystem = `Genera una Unitat Didàctica completa d'Educació Física en català. Tot el document ha d'estar en codi HTML net, a punt per imprimir en folis blancs, amb vores de línia negra dures (border: 1px solid #000).
+        Usa les dades: Cicle: ${cicle}, Nom de la UD: ${nomUd}, Durada: ${durada} sessions, Període: ${periode}.
+        
+        REQUISITS DE MAQUETACIÓ I CONTINGUT CRUCIALS:
+        1. LA PRIMERA PARTE EN GRAELLA TÈCNICA: Crea una taula inicial exacta de dues columnes on es creuïn els parells clàssics:
+           - Fila 1: ÀMBIT (Educació Física) | GRUP (${cicle})
+           - Fila 2: DURADA (${durada} Sessions) | PERÍODE (${periode})
+           - Fila 3: CURS (Curs actual) | MESTRE/A (Nom del docent)
+        
+        2. TÍTOL DE LA UD I JUSTIFICACIÓ en format de bloc formal immediatament després.
+        3. OBJECTIUS D'APRENENTATGE (DIDÀCTICS) enumerats clarament de forma consecutiva (01, 02, 03...).
+        4. SABERS BÀSICS I CRITERIS D'AVALUACIÓ oficials extrets o adaptats segons el cicle triat.
+        5. DESENVOLUPAMENT DE LES SESSIONS (${durada} sessions en subtaules de temps T10', T35' i T15').
+        
+        6. GRÀFICS D'ACTIVITATS O CROQUIS VISUALS: Per a les activitats de desenvolupament més destacades o de joc d'equip, inclou un esquema de línies de text o un SVG simplificat simulant el camp de EF dins un div amb classe "grafic-exercici" (ex: indicant posició de cons, fletxes de moviment, pilotes o porteries) per afavorir la comprensió del mestre a un sol cop d'ull.
+        
+        7. TAULA DE RÚBRICA D'AVALUACIÓ FINAL estructurada en 4 nivells de línies negres purs: Criteri, Assoliment Excel·lent (2), Assoliment Notable (1.5), Assoliment Satisfactori (1), No Assoliment (0).
+        
+        Retorna exclusivament el codi HTML intern sense cap etiqueta de codi markdown tipus \`\`\`html ni \`\`\`.`;
+
+        try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptSystem + "\n\nINFORMACIÓ DE REFERÈNCIA DEL MESTRE:\n" + textBrut }] }]
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error ? errorData.error.message : "Error de connexió");
+            }
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let textIAGenerat = data.candidates[0].content.parts[0].text;
+                textIAGenerat = textIAGenerat.replace(/```html/gi, "").replace(/```/g, "").trim();
+
+                const contenedorDocumento = document.getElementById('contingut-ud');
+                contenedorDocumento.innerHTML = textIAGenerat;
+
+                document.getElementById('estat-carrega').style.display = 'none';
+                document.getElementById('vista-document').style.display = 'block';
+                document.getElementById('vista-document').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                throw new Error("Dades buides.");
+            }
+
+        } catch (error) {
+            document.getElementById('estat-carrega').style.display = 'none';
+            alert("🚨 Error en processar el document en graella: " + error.message);
+        } finally {
+            btn.innerText = "✨ Generar Unitat Didàctica en Graella";
+            btn.style.backgroundColor = "var(--color-ia)";
+        }
+    };
+</script>
+
+</body>
+</html>
